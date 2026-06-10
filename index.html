@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Duda Sieiro</title>
+    <style>
+        /* DESIGN PREMIUM, INTENSIVE E INVERTIDO (VERDE SÁLVIA) */
+        :root {
+            --bg-color: #3F5E4D;       /* Fundo: Verde sálvia fechado */
+            --text-main: #FAF9F5;      /* Letras: Off-white linho */
+            --text-muted: #CBD2CB;     /* Cinza claro esverdeado */
+            --sage-light: #4A6D5A;     /* Fundo dos cards: Verde sálvia destaque */
+            --border-color: rgba(250, 249, 245, 0.2); 
+            --sidebar-width: 220px;
+            --accent-alert: #E88B84;   /* Alerta suave para saudade e cartas */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, SF Pro Display, SF Pro Text, Helvetica Neue, sans-serif;
+            letter-spacing: -0.01em;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* MENU LATERAL */
+        nav {
+            width: var(--sidebar-width);
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            z-index: 10;
+        }
+
+        nav h2 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: var(--text-main);
+        }
+
+        .user-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 0;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-btn.active {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border-color: transparent;
+            font-weight: 500;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            font-weight: 300;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+            padding-left: 5px;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        main {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 0 40px;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        /* BANNERS DE NOTIFICAÇÃO (HOME) */
+        .alert-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .alert-banner {
+            display: none;
+            background-color: rgba(232, 139, 132, 0.15);
+            border: 1px solid var(--accent-alert);
+            color: var(--accent-alert);
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-banner button {
+            background: transparent;
+            border: 1px solid var(--accent-alert);
+            color: var(--accent-alert);
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .home-header { text-align: center; margin-bottom: 40px; }
+        .home-header h1 { font-size: 2.2rem; font-weight: 400; margin-bottom: 12px; }
+        .home-header p { font-size: 1rem; color: var(--text-muted); font-weight: 300; }
+
+        .counter-section {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .counter-section h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-align: center; margin-bottom: 30px; }
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+        .time-box { text-align: center; }
+        .time-box span { display: block; font-size: 1.8rem; font-weight: 300; color: var(--text-main); font-variant-numeric: tabular-nums; }
+        .time-box label { font-size: 0.7rem; color: var(--text-muted); text-transform: lowercase; }
+
+        .love-duty-box { background-color: var(--sage-light); padding: 16px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+        .love-duty-text { font-size: 0.88rem; color: var(--text-main); margin-bottom: 4px; }
+        .current-date { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+
+        .saudade-section { text-align: center; margin-top: 10px; }
+        .saudade-main-btn {
+            background: transparent;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .saudade-main-btn:hover { background-color: var(--text-main); color: var(--bg-color); }
+        .saudade-status-text { font-size: 0.9rem; color: var(--text-main); margin-top: 12px; min-height: 20px; }
+
+        /* TIMELINE GEOGRÁFICA UNIFICADA */
+        .timeline { position: relative; padding-left: 30px; border-left: 1px solid var(--border-color); }
+        .timeline-item { margin-bottom: 40px; position: relative; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -35.5px; top: 6px; width: 10px; height: 10px;
+            background-color: var(--text-main); border-radius: 50%;
+        }
+        .timeline-date { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+        .timeline-location { color: var(--text-main); font-weight: 500; background: rgba(250, 249, 245, 0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .timeline-title { font-size: 1.1rem; color: var(--text-main); margin: 6px 0 4px 0; font-weight: 400; }
+        .timeline-desc { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.5; font-style: italic; }
+
+        /* CARTAS DINÂMICAS */
+        .cartas-box {
+            background-color: var(--sage-light);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .cartas-box h3 { font-size: 1rem; font-weight: 400; margin-bottom: 15px; }
+        .carta-input, .carta-textarea {
+            width: 100%;
+            background: rgba(250, 249, 245, 0.08);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .carta-textarea { height: 120px; resize: none; }
+        .carta-input::placeholder, .carta-textarea::placeholder { color: rgba(250, 249, 245, 0.3); }
+        
+        .letter-btn {
+            background-color: var(--text-main); color: var(--bg-color);
+            border: none; padding: 10px 20px; font-size: 0.85rem; font-weight: 500;
+            border-radius: 4px; cursor: pointer; transition: opacity 0.2s;
+        }
+        .letter-btn:hover { opacity: 0.9; }
+
+        .bau-cartas { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .carta-guardada {
+            background: rgba(250, 249, 245, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .carta-guardada:hover { border-color: var(--text-main); background: rgba(250, 249, 245, 0.08); }
+        .carta-header-info { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+        .carta-titulo-exibido { font-size: 1rem; font-weight: 400; color: var(--text-main); }
+        .carta-corpo-exibido { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.5; margin-top: 10px; display: none; border-top: 1px solid rgba(250,250,250,0.1); padding-top: 10px; }
+        .bau-vazio-txt { font-size: 0.9rem; color: var(--text-muted); font-style: italic; font-weight: 300; }
+
+        /* GALERIA POLAROID */
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding-top: 10px; }
+        @media (max-width: 900px) { .gallery-grid { grid-template-columns: 1fr 1fr; } }
+        .polaroid-card {
+            background: var(--sage-light); padding: 12px 12px 20px 12px; border-radius: 8px;
+            border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease;
+        }
+        .polaroid-card:hover { transform: scale(1.03); border-color: var(--text-main); }
+        .polaroid-img { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; opacity: 0.9; }
+        .polaroid-caption { margin-top: 12px; font-size: 0.8rem; color: var(--text-main); text-align: center; font-weight: 300; line-height: 1.4; }
+
+        /* CUPONS */
+        .cupons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 10px; }
+        @media (max-width: 600px) { .cupons-grid { grid-template-columns: 1fr; } }
+        .cupom-card {
+            background-color: var(--sage-light); border: 1px solid var(--border-color); padding: 24px;
+            border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; min-height: 140px; transition: all 0.3s ease;
+        }
+        .cupom-text { font-size: 1rem; color: var(--text-main); font-weight: 300; line-height: 1.4; }
+        .cupom-btn {
+            background: transparent; border: 1px solid var(--text-main); color: var(--text-main);
+            padding: 6px 14px; font-size: 0.8rem; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; margin-top: 16px;
+        }
+        .cupom-btn:hover { background-color: var(--text-main); color: var(--bg-color); }
+        .cupom-card.used { opacity: 0.4; }
+        .cupom-card.used .cupom-text { text-decoration: line-through; color: var(--text-muted); }
+        .cupom-card.used .cupom-btn { background-color: rgba(250, 249, 245, 0.1); color: var(--text-muted); border-color: transparent; }
+
+        /* NOSCO CARRINHO */
+        .carrinho-wrapper { background-color: var(--sage-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; max-width: 600px; margin: 0 auto; width: 100%; }
+        .carrinho-form { display: flex; gap: 10px; margin-bottom: 24px; }
+        .carrinho-input { flex: 1; background: rgba(250, 249, 245, 0.08); border: 1px solid var(--border-color); border-radius: 4px; padding: 10px 14px; color: var(--text-main); font-size: 0.9rem; outline: none; }
+        .carrinho-input::placeholder { color: rgba(250, 249, 245, 0.4); }
+        .carrinho-add-btn { background-color: var(--text-main); color: var(--bg-color); border: none; padding: 0 18px; border-radius: 4px; font-size: 0.85rem; font-weight: 500; cursor: pointer; }
+        .carrinho-lista, .concluidos-lista { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .carrinho-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 4px; background: rgba(250, 249, 245, 0.04); border: 1px solid rgba(250, 249, 245, 0.05); }
+        .carrinho-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--bg-color); }
+        .carrinho-text { font-size: 0.95rem; color: var(--text-main); font-weight: 300; flex: 1; }
+        .divisoria-carrinho { margin: 25px 0 20px 0; border: none; border-top: 1px solid var(--border-color); }
+        .concluidos-titulo { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
+        .carrinho-item.done { opacity: 0.4; }
+        .carrinho-item.done .carrinho-text { text-decoration: line-through; }
+
+        /* SORTEADOR */
+        .sorteio-box { background-color: var(--sage-light); border: 1px solid var(--border-color); padding: 40px 20px; border-radius: 8px; text-align: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .sorteio-resultado { font-size: 1.2rem; color: var(--text-main); font-weight: 400; min-height: 40px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; }
+        .sorteio-btn { background-color: var(--text-main); color: var(--bg-color); border: none; padding: 10px 24px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>Duda Sieiro</h2>
+        <div class="user-selector">
+            <button class="user-btn active" id="btn-ana" onclick="setUser('ana')">sou a ana</button>
+            <button class="user-btn" id="btn-duda" onclick="setUser('duda')">sou a duda</button>
+        </div>
+        <a href="#home">Início</a>
+        <a href="#lugares-historia">História & Lugares</a>
+        <a href="#cartas">Caixa de Cartas</a>
+        <a href="#fotos">Momentos</a>
+        <a href="#cupons">Cupons</a>
+        <a href="#carrinho">Nosso Carrinho</a>
+        <a href="#tedio">O que fazer hoje</a>
+    </nav>
+
+    <main>
+        <!-- HOME -->
+        <section id="home">
+            <div class="alert-container">
+                <!-- AVISO DE SAUDADE -->
+                <div class="alert-banner" id="saudade-alert">
+                    <span id="saudade-alert-text">alguém está com saudade</span>
+                    <button onclick="clearSaudadeAlert()">limpar aviso</button>
+                </div>
+                <!-- AVISO DE CARTA NOVA -->
+                <div class="alert-banner" id="carta-alert" style="border-color: #FAF9F5; color: #FAF9F5; background: rgba(250,250,250,0.08)">
+                    <span id="carta-alert-text">Você tem uma nova carta!</span>
+                    <button onclick="clearLetterAlert()" style="border-color: #FAF9F5; color: #FAF9F5;">entendido</button>
+                </div>
+            </div>
+
+            <div class="home-header">
+                <h1>duda sieiro.</h1>
+                <p>obrigada por ser o lar dos meus melhores dias, te amo.</p>
+            </div>
+
+            <div class="counter-section">
+                <h2>nossa história começou há</h2>
+                <div class="timer">
+                    <div class="time-box"><span id="days">00</span><label>dias</label></div>
+                    <div class="time-box"><span id="hours">00</span><label>horas</label></div>
+                    <div class="time-box"><span id="minutes">00</span><label>minutos</label></div>
+                    <div class="time-box"><span id="seconds">00</span><label>segundos</label></div>
+                </div>
+                
+                <div class="love-duty-box">
+                    <div class="love-duty-text" id="love-duty">carregando...</div>
+                    <div class="current-date" id="today-date"></div>
+                </div>
+
+                <div class="saudade-section">
+                    <button class="saudade-main-btn" onclick="triggerSaudade()">estou com saudade</button>
+                    <div class="saudade-status-text" id="saudade-status"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTÓRIA E LUGARES UNIFICADOS -->
+        <section id="lugares-historia">
+            <h2 style="margin-bottom: 40px; font-weight: 400;">Nossa História & Lugares Favoritos</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">20 Abril 2024 <span class="timeline-location">📍 Festa dos russos</span></div>
+                    <div class="timeline-title">Primeiro Beijo</div>
+                    <div class="timeline-desc">"O dia que você me pediu um pod e acabamos fechando um quatro é par..."</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">12 Junho 2025 <span class="timeline-location">📍 Tinder</span></div>
+                    <div class="timeline-title">Primeira Conversa</div>
+                    <div class="timeline-desc">"Nos achamos no tinder graças a Deus."</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">20 Junho 2025 <span class="timeline-location">📍 Mistura Carioca/sua casa kkkkkk</span></div>
+                    <div class="timeline-title">Primeiro Encontro</div>
+                    <div class="timeline-desc">"O dia que vc me embebedou."</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">21 Julho 2025 <span class="timeline-location">📍 Praça da liberdade</span></div>
+                    <div class="timeline-title">Ficantes Sério</div>
+                    <div class="timeline-desc">"O momento que você quis namorar comigo sem namorar... "</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">27 Julho 2025 <span class="timeline-location">📍 ti liguei no zap</span></div>
+                    <div class="timeline-title">Primeiro "Te Amo"</div>
+                    <div class="timeline-desc">"Quase me caguei nesse dia rs. "</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">06 Setembro 2025 <span class="timeline-location">📍 Japonês</span></div>
+                    <div class="timeline-title">O Namoro</div>
+                    <div class="timeline-desc">"O dia que eu disse sim pra mulher da minha vida, te amo. Obrigada por estar comigo sempre"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SISTEMA DE CARTAS DINÂMICAS -->
+        <section id="cartas">
+            <h2 style="margin-bottom: 20px; font-weight: 400;">Nossa Caixa de Cartas</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 40px; font-weight: 300;">Escreva uma carta surpresa. Ela ficará guardada no baú e gerará um aviso na tela inicial.</p>
+            
+            <div class="cartas-box">
+                <h3 id="escrever-titulo-box">Escrever uma carta como: ana</h3>
+                <input type="text" id="carta-titulo" class="carta-input" placeholder="Título da carta...">
+                <textarea id="carta-conteudo" class="carta-textarea" placeholder="Escreva o conteúdo com calma..."></textarea>
+                <button class="letter-btn" onclick="saveNewLetter()">Enviar para o Baú</button>
+            </div>
+
+            <h2 style="font-size: 1.2rem; font-weight: 400; margin: 30px 0 15px 0;">Baú de Cartas Guardadas</h2>
+            <div class="bau-cartas" id="container-bau">
+                <!-- Cartas geradas dinamicamente entram aqui -->
+            </div>
+        </section>
+
+        <!-- MOMENTOS (FOTOS) -->
+        <section id="fotos">
+            <h2 style="margin-bottom: 20px; font-weight: 400;">Nossos momentos</h2>
+            <div class="gallery-grid">
+                <div class="polaroid-card"><img src="foto1.jpg" class="polaroid-img"><div class="polaroid-caption">O dia que eu flagrei uma mulher bonita rs</div></div>
+                <div class="polaroid-card"><img src="foto2.jpg" class="polaroid-img"><div class="polaroid-caption">Uma das nossas poucas fotos boas...</div></div>
+                <div class="polaroid-card"><img src="foto3.jpg" class="polaroid-img"><div class="polaroid-caption">Pós com quem será no meu niversario.</div></div>
+                <div class="polaroid-card"><img src="foto4.jpg" class="polaroid-img"><div class="polaroid-caption">obrigada por ser meu lar.</div></div>
+                <div class="polaroid-card"><img src="foto5.jpg" class="polaroid-img"><div class="polaroid-caption">nós quando ficavamos sério.</div></div>
+                <div class="polaroid-card"><img src="foto6.jpg" class="polaroid-img"><div class="polaroid-caption">ngm imagina mas eu passei mal a beça esse dia.</div></div>
+                <div class="polaroid-card"><img src="foto7.jpg" class="polaroid-img"><div class="polaroid-caption">o dia qui voce me pediu em casamento.</div></div>
+                <div class="polaroid-card"><img src="foto8.jpg" class="polaroid-img"><div class="polaroid-caption">qualquer lugar fica bom se é contigo.</div></div>
+                <div class="polaroid-card"><img src="foto9.jpg" class="polaroid-img"><div class="polaroid-caption">a mulher mais linda do mundo.</div></div>
+                <div class="polaroid-card"><img src="foto10.jpg" class="polaroid-img"><div class="polaroid-caption">oii ti amo.</div></div>
+            </div>
+        </section>
+
+        <!-- CUPONS -->
+        <section id="cupons">
+            <h2 style="margin-bottom: 20px; font-weight: 400;">Seus cupons</h2>
+            <div class="cupons-grid">
+                <div class="cupom-card" id="cupom-1"><div class="cupom-text">vale uma massagem completa</div><button class="cupom-btn" onclick="redeemCupom(1)">resgatar</button></div>
+                <div class="cupom-card" id="cupom-2"><div class="cupom-text">vale um delivery por minha conta</div><button class="cupom-btn" onclick="redeemCupom(2)">resgatar</button></div>
+                <div class="cupom-card" id="cupom-3"><div class="cupom-text">vale dormir de conchinha</div><button class="cupom-btn" onclick="redeemCupom(3)">resgatar</button></div>
+                <div class="cupom-card" id="cupom-4"><div class="cupom-text">vale você escolher o filme hoje</div><button class="cupom-btn" onclick="redeemCupom(4)">resgatar</button></div>
+                <div class="cupom-card" id="cupom-5"><div class="cupom-text">vale um dia de preguiça total</div><button class="cupom-btn" onclick="redeemCupom(5)">resgatar</button></div>
+                <div class="cupom-card" id="cupom-6"><div class="cupom-text">vale um abraço apertado</div><button class="cupom-btn" onclick="redeemCupom(6)">resgatar</button></div>
+            </div>
+        </section>
+
+        <!-- NOSCO CARRINHO -->
+        <section id="carrinho">
+            <h2 style="margin-bottom: 20px; font-weight: 400;">Nosso Carrinho</h2>
+            <div class="carrinho-wrapper">
+                <div class="carrinho-form">
+                    <input type="text" id="carrinho-input" class="carrinho-input" placeholder="Escreva um plano aqui...">
+                    <button class="carrinho-add-btn" onclick="addPlanItem()">Adicionar</button>
+                </div>
+                <ul class="carrinho-lista" id="lista-pendentes"></ul>
+                <hr class="divisoria-carrinho">
+                <div class="concluidos-titulo">Compras Concluídas</div>
+                <ul class="concluidos-lista" id="lista-concluidos"></ul>
+            </div>
+        </section>
+
+        <!-- SORTEADOR -->
+        <section id="tedio">
+            <h2 style="margin-bottom: 20px; font-weight: 400;">o que vamos fazer hoje?</h2>
+            <div class="sorteio-box">
+                <div class="sorteio-resultado" id="resultado-role">clica ali para sortear</div>
+                <button class="sorteio-btn" onclick="sortearRole()">sortear</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const startDate = new Date(2025, 8, 6, 0, 0, 0); 
+        let currentUser = 'ana'; 
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        function checkLoveDuty() {
+            const today = new Date();
+            const dayOfMonth = today.getDate();
+            const dutyBox = document.getElementById('love-duty');
+            const dateBox = document.getElementById('today-date');
+
+            if (dayOfMonth % 2 !== 0) {
+                dutyBox.innerText = "hoje é meu dia de amar mais :) ";
+            } else {
+                dutyBox.innerText = "hoje é seu dia de amar mais :( ";
+            }
+            dateBox.innerText = today.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+        }
+
+        function setUser(user) {
+            currentUser = user;
+            document.getElementById('btn-ana').classList.remove('active');
+            document.getElementById('btn-duda').classList.remove('active');
+            document.getElementById(user === 'ana' ? 'btn-ana' : 'btn-duda').classList.add('active');
+            
+            document.getElementById('escrever-titulo-box').innerText = `Escrever uma carta como: ${user}`;
+            document.getElementById('saudade-status').innerText = "";
+            
+            checkSaudadeNotifications();
+            checkLetterNotifications();
+            renderCartas(); // Força re-render para garantir privacidade ao trocar de usuário
+        }
+
+        // SISTEMA DE SAUDADE
+        function triggerSaudade() {
+            document.getElementById('saudade-status').innerText = `${currentUser} tá com saudade`;
+            localStorage.setItem('last-saudade-from', currentUser);
+            localStorage.setItem('saudade-active', 'true');
+        }
+
+        function checkSaudadeNotifications() {
+            const hasSaudade = localStorage.getItem('saudade-active') === 'true';
+            const sender = localStorage.getItem('last-saudade-from');
+            const banner = document.getElementById('saudade-alert');
+
+            if (hasSaudade && sender && sender !== currentUser) {
+                banner.style.display = 'flex';
+                document.getElementById('saudade-alert-text').innerText = `${sender} avisou que está com saudade de você hoje!`;
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        function clearSaudadeAlert() {
+            localStorage.removeItem('saudade-active');
+            document.getElementById('saudade-alert').style.display = 'none';
+        }
+
+        // SISTEMA DINÂMICO DE CARTAS
+        let cartasSalvas = [];
+
+        function loadCartas() {
+            const localData = localStorage.getItem('bau-cartas-dados');
+            if (localData) {
+                cartasSalvas = JSON.parse(localData);
+            } else {
+                cartasSalvas = []; // Começa totalmente limpo, sem exemplos falsos
+                localStorage.setItem('bau-cartas-dados', JSON.stringify(cartasSalvas));
+            }
+            renderCartas();
+        }
+
+        function saveNewLetter() {
+            const tituloIn = document.getElementById('carta-titulo');
+            const conteudoIn = document.getElementById('carta-conteudo');
+            
+            if (tituloIn.value.trim() === '' || conteudoIn.value.trim() === '') return;
+
+            const novaCarta = {
+                id: Date.now(),
+                de: currentUser,
+                titulo: tituloIn.value.trim(),
+                texto: conteudoIn.value.trim(),
+                data: new Date().toLocaleDateString('pt-BR')
+            };
+
+            cartasSalvas.push(novaCarta);
+            localStorage.setItem('bau-cartas-dados', JSON.stringify(cartasSalvas));
+            
+            // Ativa alerta para a outra pessoa
+            localStorage.setItem('nova-carta-alerta', 'true');
+            localStorage.setItem('nova-carta-autor', currentUser);
+
+            tituloIn.value = '';
+            conteudoIn.value = '';
+            renderCartas();
+            checkLetterNotifications();
+        }
+
+        function renderCartas() {
+            const container = document.getElementById('container-bau');
+            container.innerHTML = '';
+
+            if (cartasSalvas.length === 0) {
+                container.innerHTML = '<p class="bau-vazio-txt">O baú está vazio. Escreva a primeira carta para ela ali em cima!</p>';
+                return;
+            }
+
+            cartasSalvas.forEach(carta => {
+                const div = document.createElement('div');
+                div.className = 'carta-guardada';
+                div.onclick = () => {
+                    const corpo = div.querySelector('.carta-corpo-exibido');
+                    corpo.style.display = corpo.style.display === 'block' ? 'none' : 'block';
+                };
+
+                div.innerHTML = `
+                    <div class="carta-header-info">
+                        <span>De: <b>${carta.de}</b></span>
+                        <span>${carta.data}</span>
+                    </div>
+                    <div class="carta-titulo-exibido">${carta.titulo}</div>
+                    <div class="carta-corpo-exibido">${carta.texto.replace(/\n/g, '<br>')}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkLetterNotifications() {
+            const alertaAtivo = localStorage.getItem('nova-carta-alerta') === 'true';
+            const autor = localStorage.getItem('nova-carta-autor');
+            const banner = document.getElementById('carta-alert');
+
+            if (alertaAtivo && autor && autor !== currentUser) {
+                banner.style.display = 'flex';
+                document.getElementById('carta-alert-text').innerText = `✉️ Você tem uma nova carta não lida de ${autor}!`;
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        function clearLetterAlert() {
+            localStorage.removeItem('nova-carta-alerta');
+            document.getElementById('carta-alert').style.display = 'none';
+        }
+
+        // LÓGICA DO NOSSO CARRINHO
+        let planItems = [];
+        function loadCarrinho() {
+            const savedItems = localStorage.getItem('nosso-carrinho-itens');
+            if (savedItems) { planItems = JSON.parse(savedItems); } 
+            else {
+                planItems = [
+                    { id: 1, text: "comprar moletons combinando", done: false },
+                    { id: 2, text: "noite do fondue juntas", done: false }
+                ];
+                localStorage.setItem('nosso-carrinho-itens', JSON.stringify(planItems));
+            }
+            renderCarrinho();
+        }
+
+        function addPlanItem() {
+            const input = document.getElementById('carrinho-input');
+            const text = input.value.trim().toLowerCase();
+            if (text === '') return;
+            planItems.push({ id: Date.now(), text: text, done: false });
+            input.value = '';
+            localStorage.setItem('nosso-carrinho-itens', JSON.stringify(planItems));
+            renderCarrinho();
+        }
+
+        function toggleItemStatus(id) {
+            planItems = planItems.map(item => item.id === id ? { ...item, done: !item.done } : item);
+            localStorage.setItem('nosso-carrinho-itens', JSON.stringify(planItems));
+            renderCarrinho();
+        }
+
+        function renderCarrinho() {
+            const pendentes = document.getElementById('lista-pendentes');
+            const concluidos = document.getElementById('lista-concluidos');
+            pendentes.innerHTML = ''; concluidos.innerHTML = '';
+
+            planItems.forEach(item => {
+                const li = document.createElement('li');
+                li.className = `carrinho-item ${item.done ? 'done' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" class="carrinho-checkbox" ${item.done ? 'checked' : ''} onchange="toggleItemStatus(${item.id})">
+                    <span class="carrinho-text">${item.text}</span>
+                `;
+                if (item.done) concluidos.appendChild(li); else pendentes.appendChild(li);
+            });
+        }
+
+        // FUNÇÃO DOS CUPONS
+        function redeemCupom(id) {
+            const card = document.getElementById(`cupom-${id}`);
+            const btn = card.querySelector('.cupom-btn');
+            if (!card.classList.contains('used')) {
+                card.classList.add('used'); btn.innerText = 'resgatado! ✓';
+                localStorage.setItem(`cupom-status-${id}`, 'used');
+            } else {
+                card.classList.remove('used'); btn.innerText = 'resgatar';
+                localStorage.removeItem(`cupom-status-${id}`);
+            }
+        }
+
+        function loadCupons() {
+            for (let i = 1; i <= 6; i++) {
+                if (localStorage.getItem(`cupom-status-${i}`) === 'used') {
+                    const card = document.getElementById(`cupom-${i}`);
+                    if (card) { card.classList.add('used'); card.querySelector('.cupom-btn').innerText = 'resgatado! ✓'; }
+                }
+            }
+        }
+
+        // SORTEADOR
+        const roles = ["ir pro shopping pátio andar à toa", "sentar na praça da liberdade no nosso cantinho", "ir pro sobrado", "ficar em casa sem fazer nada e pedir um delivery", "ir no mc", "ir no cinema", "tabaco", "ir no museu", "andar de bicicleta", "ver um filme em casa", "cozinhar juntas"];
+        function sortearRole() {
+            const resultado = document.getElementById('resultado-role');
+            let contador = 0;
+            const intervalo = setInterval(() => {
+                resultado.innerText = roles[Math.floor(Math.random() * roles.length)];
+                contador++;
+                if (contador > 10) { clearInterval(intervalo); resultado.innerText = roles[Math.floor(Math.random() * roles.length)]; }
+            }, 80);
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        checkLoveDuty();
+        loadCupons();
+        loadCarrinho();
+        loadCartas();
+        checkSaudadeNotifications();
+        checkLetterNotifications();
+        setInterval(() => { checkSaudadeNotifications(); checkLetterNotifications(); }, 5000);
+    </script>
+</body>
+</html>
+
+
+
